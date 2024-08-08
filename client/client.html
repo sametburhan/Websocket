@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client</title>
+</head>
+<body>
+    <h1>WebSocket Client</h1>
+    <button id="connect">Connect</button>
+    <button id="send">Send Message</button>
+    <script>
+        let socket;
+
+        document.getElementById('connect').onclick = () => {
+            socket = new WebSocket('ws://198.211.98.57:7443');
+
+            socket.onopen = () => {
+                console.log('Bağlantı kuruldu.');
+            };
+
+            socket.onmessage = (event) => {
+                console.log('Sunucudan mesaj:', event.data);
+            };
+
+            socket.onclose = () => {
+                console.log('Bağlantı kapandı.');
+            };
+
+            socket.onerror = (error) => {
+                console.error('WebSocket hatası:', error);
+            };
+        };
+
+        document.getElementById('send').onclick = () => {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                const message = 'Merhaba Sunucu!';
+                console.log('İstemciden mesaj:', message);
+                socket.send(message);
+            } else {
+                console.log('Bağlantı açık değil.');
+            }
+        };
+    </script>
+</body>
+</html>
